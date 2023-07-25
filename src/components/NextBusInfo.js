@@ -1,5 +1,5 @@
 import { View, Text } from "react-native";
-import { COLOR } from "../helper/color";
+import { COLOR } from "../helpers/color";
 
 const NextBusInfo = ({ remainedTimeText, hasInfo, numOfRemainedStops, seatStatusText }) => {
   if (!hasInfo) return <Text style={{ color: COLOR.GRAY_2 }}>도착 정보 없음</Text>;

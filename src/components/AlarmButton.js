@@ -1,6 +1,6 @@
 import { TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { COLOR } from "../helper/color";
+import { COLOR } from "../helpers/color";
 
 const AlarmButton = ({ onPress, style }) => {
   return (

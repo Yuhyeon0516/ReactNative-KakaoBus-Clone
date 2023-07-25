@@ -1,10 +1,10 @@
 import { Text, View } from "react-native";
 import BookmarkButton from "./BookmarkButton";
-import { COLOR } from "../helper/color";
+import { COLOR } from "../helpers/color";
 import AlarmButton from "./AlarmButton";
 import NextBusInfo from "./NextBusInfo";
 
-const BusInfo = ({ isBookmarked, onPressBookmark, numColor, num, directionDescription }) => {
+const BusInfo = ({ isBookmarked, onPressBookmark, numColor, num, directionDescription, processedNextBusInfo }) => {
   return (
     <View style={{ flexDirection: "row" }}>
       <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
@@ -16,8 +16,17 @@ const BusInfo = ({ isBookmarked, onPressBookmark, numColor, num, directionDescri
       </View>
       <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
         <View style={{ flex: 1 }}>
-          <NextBusInfo hasInfo={true} remainedTimeText={"8분 0초"} numOfRemainedStops={5} seatStatusText={"여유"} />
-          <NextBusInfo hasInfo={false} />
+          {processedNextBusInfo.map((info, index) => (
+            <NextBusInfo
+              key={`Next-${index}`}
+              hasInfo={info.hasInfo}
+              remainedTimeText={info.remainedTimeText}
+              numOfRemainedStops={info.numOfRemainedStops}
+              seatStatusText={info.seatStatusText}
+            />
+          ))}
+          {/* <NextBusInfo hasInfo={true} remainedTimeText={"8분 0초"} numOfRemainedStops={5} seatStatusText={"여유"} />
+          <NextBusInfo hasInfo={false} /> */}
         </View>
         <AlarmButton onPress={() => {}} style={{ paddingHorizontal: 15 }} />
       </View>
