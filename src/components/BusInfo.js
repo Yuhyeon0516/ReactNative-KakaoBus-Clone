@@ -6,7 +6,7 @@ import NextBusInfo from "./NextBusInfo";
 
 const BusInfo = ({ isBookmarked, onPressBookmark, numColor, num, directionDescription, processedNextBusInfo }) => {
   return (
-    <View style={{ flexDirection: "row" }}>
+    <View style={{ flexDirection: "row", height: 75 }}>
       <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
         <BookmarkButton size={20} isBookmarked={isBookmarked} onPress={onPressBookmark} style={{ paddingHorizontal: 10 }} />
         <View style={{ flex: 1 }}>
