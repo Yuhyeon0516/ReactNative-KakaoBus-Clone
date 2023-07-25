@@ -1,26 +1,64 @@
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { SectionList, StyleSheet, Text, View } from "react-native";
-import BusInfo from "./src/components/BusInfo";
-import { busStop, getBusNumColorByType, getRemainedTimeText, getSeatStatusText, getSections } from "./src/helpers/data";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { Platform, SafeAreaView, SectionList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import { SimpleLineIcons } from "@expo/vector-icons";
+
+import BusInfo from "./src/components/BusInfo";
+import { busStop, getBusNumColorByType, getRemainedTimeText, getSeatStatusText, getSections } from "./src/helpers/data";
 import { COLOR } from "./src/helpers/color";
+import Margin from "./src/components/Margin";
+import BookmarkButton from "./src/components/BookmarkButton";
 
 export default function App() {
   const sections = getSections(busStop.buses);
   const [now, setNow] = useState(dayjs());
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const newNow = dayjs();
-      setNow(newNow);
-    }, 1000);
+  const onPressBusStopBookmark = () => {};
 
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     const newNow = dayjs();
+  //     setNow(newNow);
+  //   }, 1000);
 
+  //   return () => {
+  //     clearInterval(interval);
+  //   };
+  // }, []);
+
+  const ListHeaderButton = ({ iconName }) => (
+    <TouchableOpacity style={{ padding: 10 }}>
+      <SimpleLineIcons name={iconName} size={20} color={COLOR.WHITE} />
+    </TouchableOpacity>
+  );
+
+  const ListHeaderComponent = () => {
+    return (
+      <SafeAreaView style={{ backgroundColor: COLOR.GRAY_3, height: 250, paddingTop: Platform.OS === "android" ? 30 : 0 }}>
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <ListHeaderButton iconName={"arrow-left"} />
+          <ListHeaderButton iconName={"home"} />
+        </View>
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <Margin height={10} />
+          <Text style={{ color: COLOR.WHITE, fontSize: 13 }}>{busStop.id}</Text>
+          <Margin height={4} />
+          <Text style={{ color: COLOR.WHITE, fontSize: 20 }}>{busStop.name}</Text>
+          <Margin height={4} />
+          <Text style={{ color: COLOR.GRAY_1, fontSize: 14 }}>{busStop.directionDescription}</Text>
+          <Margin height={20} />
+          <BookmarkButton
+            size={25}
+            isBookmarked={busStop.isBookmarked}
+            onPress={onPressBusStopBookmark}
+            style={{ borderWidth: 0.3, borderColor: COLOR.GRAY_1, borderRadius: 35 / 2, padding: 5 }}
+          />
+          <Margin height={25} />
+        </View>
+      </SafeAreaView>
+    );
+  };
   const renderSectionHeader = ({ section: { title } }) => (
     <View
       style={{
@@ -75,9 +113,15 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={styles.container}>
-        <SectionList style={{ flex: 1, width: "100%" }} sections={sections} renderSectionHeader={renderSectionHeader} renderItem={renderItem} />
-      </SafeAreaView>
+      <View style={styles.container}>
+        <SectionList
+          style={{ flex: 1, width: "100%" }}
+          sections={sections}
+          ListHeaderComponent={ListHeaderComponent}
+          renderSectionHeader={renderSectionHeader}
+          renderItem={renderItem}
+        />
+      </View>
     </SafeAreaProvider>
   );
 }
