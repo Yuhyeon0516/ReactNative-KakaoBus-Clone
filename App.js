@@ -28,16 +28,16 @@ export default function App() {
     }
   }, [refreshing]);
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     const newNow = dayjs();
-  //     setNow(newNow);
-  //   }, 1000);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const newNow = dayjs();
+      setNow(newNow);
+    }, 1000);
 
-  //   return () => {
-  //     clearInterval(interval);
-  //   };
-  // }, []);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   const ListHeaderButton = ({ iconName }) => (
     <TouchableOpacity style={{ padding: 10 }}>
@@ -55,7 +55,7 @@ export default function App() {
       <Margin height={20} />
       <BookmarkButton
         size={25}
-        isBookmarked={busStop.isBookmarked}
+        isBookmarkedProp={busStop.isBookmarked}
         onPress={onPressBusStopBookmark}
         style={{ borderWidth: 0.3, borderColor: COLOR.GRAY_1, borderRadius: 35 / 2, padding: 5 }}
       />
