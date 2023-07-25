@@ -3,7 +3,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { COLOR } from "../helpers/color";
 import { useBookmark } from "../hooks/useBookmark";
 
-const BookmarkButton = ({ size, isBookmarkedProp, onPress, style }) => {
+const BookmarkButton = ({ NEWCOLOR, size, isBookmarkedProp, onPress, style }) => {
   const { isBookmarked, toggleIsBookmarked } = useBookmark(isBookmarkedProp);
 
   return (
@@ -14,7 +14,7 @@ const BookmarkButton = ({ size, isBookmarkedProp, onPress, style }) => {
       }}
       style={style}
     >
-      <Ionicons name="star" size={size} color={isBookmarked ? COLOR.YELLOW : COLOR.GRAY_1} />
+      <Ionicons name="star" size={size} color={isBookmarked ? COLOR.YELLOW : NEWCOLOR.GRAY_1_GRAY_4} />
     </TouchableOpacity>
   );
 };

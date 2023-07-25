@@ -1,5 +1,5 @@
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { Platform, RefreshControl, SectionList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Platform, RefreshControl, SectionList, StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { SimpleLineIcons } from "@expo/vector-icons";
@@ -9,11 +9,14 @@ import { busStop, getBusNumColorByType, getRemainedTimeText, getSeatStatusText, 
 import { COLOR } from "./src/helpers/color";
 import Margin from "./src/components/Margin";
 import BookmarkButton from "./src/components/BookmarkButton";
+import { useTheme } from "./src/hooks/useTheme";
 
 export default function App() {
   const sections = getSections(busStop.buses);
   const [now, setNow] = useState(dayjs());
   const [refreshing, setRefreshing] = useState(false);
+
+  const { NEWCOLOR, isDark, toggleIsDark } = useTheme();
 
   const onPressBusStopBookmark = () => {};
 
@@ -41,23 +44,30 @@ export default function App() {
 
   const ListHeaderButton = ({ iconName }) => (
     <TouchableOpacity style={{ padding: 10 }}>
-      <SimpleLineIcons name={iconName} size={20} color={COLOR.WHITE} />
+      <SimpleLineIcons name={iconName} size={20} color={NEWCOLOR.WHITE_BLACK} />
     </TouchableOpacity>
   );
 
   const ListHeaderComponent = () => (
-    <View style={{ backgroundColor: COLOR.GRAY_3, height: 170, justifyContent: "center", alignItems: "center" }}>
-      <Text style={{ color: COLOR.WHITE, fontSize: 13 }}>{busStop.id}</Text>
+    <View style={{ backgroundColor: NEWCOLOR.GRAY_3_GRAY_2, height: 170, justifyContent: "center", alignItems: "center" }}>
+      <Text style={{ color: NEWCOLOR.WHITE_BLACK, fontSize: 13 }}>{busStop.id}</Text>
       <Margin height={4} />
-      <Text style={{ color: COLOR.WHITE, fontSize: 20 }}>{busStop.name}</Text>
+      <Text style={{ color: NEWCOLOR.WHITE_BLACK, fontSize: 20 }}>{busStop.name}</Text>
       <Margin height={4} />
-      <Text style={{ color: COLOR.GRAY_1, fontSize: 14 }}>{busStop.directionDescription}</Text>
+      <Text style={{ color: NEWCOLOR.GRAY_1_GRAY_4, fontSize: 14 }}>{busStop.directionDescription}</Text>
       <Margin height={20} />
       <BookmarkButton
+        NEWCOLOR={NEWCOLOR}
         size={25}
         isBookmarkedProp={busStop.isBookmarked}
         onPress={onPressBusStopBookmark}
-        style={{ borderWidth: 0.3, borderColor: COLOR.GRAY_1, borderRadius: 35 / 2, padding: 5 }}
+        style={{ borderWidth: 0.3, borderColor: NEWCOLOR.GRAY_1_GRAY_4, borderRadius: 35 / 2, padding: 5 }}
+      />
+      <Switch
+        value={isDark}
+        onValueChange={(v) => {
+          toggleIsDark();
+        }}
       />
     </View>
   );
@@ -67,14 +77,14 @@ export default function App() {
       style={{
         paddingLeft: 13,
         paddingVertical: 3,
-        backgroundColor: COLOR.GRAY_1,
+        backgroundColor: NEWCOLOR.GRAY_1_GRAY_4,
         borderTopWidth: 0.5,
         borderBottomWidth: 0.5,
-        borderTopColor: COLOR.GRAY_2,
-        borderBottomColor: COLOR.GRAY_2,
+        borderTopColor: NEWCOLOR.GRAY_2_GRAY_3,
+        borderBottomColor: NEWCOLOR.GRAY_2_GRAY_3,
       }}
     >
-      <Text style={{ color: COLOR.GRAY_4, fontSize: 12 }}>{title}</Text>
+      <Text style={{ color: NEWCOLOR.GRAY_4_GRAY_1, fontSize: 12 }}>{title}</Text>
     </View>
   );
 
@@ -104,6 +114,7 @@ export default function App() {
 
     return (
       <BusInfo
+        NEWCOLOR={NEWCOLOR}
         isBookmarked={bus.isBookmarked}
         onPressBookmark={() => {}}
         numColor={numColor}
@@ -114,18 +125,18 @@ export default function App() {
     );
   };
 
-  const ItemSeparatorComponent = () => <View style={{ width: "100%", height: 1, backgroundColor: COLOR.GRAY_1 }} />;
+  const ItemSeparatorComponent = () => <View style={{ width: "100%", height: 1, backgroundColor: NEWCOLOR.GRAY_1_GRAY_4 }} />;
   const ListFooterComponent = () => <Margin height={15} />;
 
   return (
     <SafeAreaProvider>
-      <View style={styles.container}>
-        <View style={{ backgroundColor: COLOR.GRAY_3, width: "100%" }}>
+      <View style={{ ...styles.container, backgroundColor: NEWCOLOR.WHITE_BLACK }}>
+        <View style={{ backgroundColor: NEWCOLOR.GRAY_3_GRAY_2, width: "100%" }}>
           <SafeAreaView style={{ flexDirection: "row", justifyContent: "space-between" }}>
             <ListHeaderButton iconName={"arrow-left"} />
             <ListHeaderButton iconName={"home"} />
           </SafeAreaView>
-          <View style={{ position: "absolute", width: "100%", height: 500, backgroundColor: COLOR.GRAY_3, zIndex: -1 }} />
+          <View style={{ position: "absolute", width: "100%", height: 500, backgroundColor: NEWCOLOR.GRAY_3_GRAY_2, zIndex: -1 }} />
         </View>
         <SectionList
           style={{ flex: 1, width: "100%", top: Platform.OS === "ios" ? -40 : 0 }}
@@ -145,7 +156,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFF",
     alignItems: "center",
     justifyContent: "center",
   },
