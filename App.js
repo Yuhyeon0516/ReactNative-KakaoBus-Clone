@@ -3,10 +3,22 @@ import { SectionList, StyleSheet, Text } from "react-native";
 import BusInfo from "./src/components/BusInfo";
 import { busStop, getBusNumColorByType, getRemainedTimeText, getSeatStatusText, getSections } from "./src/helpers/data";
 import dayjs from "dayjs";
+import { useEffect, useState } from "react";
 
 export default function App() {
   const sections = getSections(busStop.buses);
-  const now = dayjs();
+  const [now, setNow] = useState(dayjs());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const newNow = dayjs();
+      setNow(newNow);
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   const renderItem = ({ item: bus }) => {
     const numColor = getBusNumColorByType(bus.type);
