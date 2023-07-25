@@ -6,7 +6,6 @@ import { SimpleLineIcons } from "@expo/vector-icons";
 
 import BusInfo from "./src/components/BusInfo";
 import { busStop, getBusNumColorByType, getRemainedTimeText, getSeatStatusText, getSections } from "./src/helpers/data";
-import { COLOR } from "./src/helpers/color";
 import Margin from "./src/components/Margin";
 import BookmarkButton from "./src/components/BookmarkButton";
 import { useTheme } from "./src/hooks/useTheme";
